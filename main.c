@@ -38,11 +38,34 @@ void toLowerCase(char *str) {
     }
 }
 
+// Função para salvar a string em um arquivo
+void salvarArquivo(const char *nomeArquivo, const char *texto) {
+    FILE *file = fopen(nomeArquivo, "w");
+    if (file == NULL) {
+        printf("Erro ao salvar o arquivo.\n");
+        return;
+    }
+    fprintf(file, "%s", texto);
+    fclose(file);
+}
+
+// Função para carregar a string de um arquivo
+void carregarArquivo(const char *nomeArquivo, char *texto) {
+    FILE *file = fopen(nomeArquivo, "r");
+    if (file == NULL) {
+        printf("Erro ao ler o arquivo.\n");
+        return;
+    }
+    fgets(texto, MAX_LEN, file);
+    fclose(file);
+}
+
 int main() {
     setlocale(LC_ALL, "");
     
     char frase[MAX_LEN];
     int n, opcao;
+    const char *arquivo = "mensagem.txt";
 
     do {
         printf("\n--- Jogo da Imitação Textual ---\n");
@@ -57,7 +80,7 @@ int main() {
             case 1:
                 printf("Digite a frase (max %d caracteres): ", MAX_LEN);
                 fgets(frase, MAX_LEN, stdin);
-                frase[strcspn(frase, "\n")] = '\0'; // Remover o '\n' do final 
+                frase[strcspn(frase, "\n")] = '\0'; // Remover o '\n' do final
                 
 				toLowerCase(frase);                 
 
@@ -66,10 +89,14 @@ int main() {
                 getchar();
                 
                 criptografar(frase, n);
-                printf("Texto criptografado: %s\n", frase);                
+                printf("Texto criptografado: %s\n", frase);
+				
+				salvarArquivo(arquivo, frase);
+                printf("Frase salva no arquivo.\n");                
                 break;
 
             case 2:
+            	carregarArquivo(arquivo, frase);
                 printf("Texto criptografado carregado: %s\n", frase);
 
                 printf("Escolha o valor de N usado para criptografar (1 a 26): ");
