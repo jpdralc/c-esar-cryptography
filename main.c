@@ -1,7 +1,10 @@
 #include <stdio.h>
+#include <locale.h>
 #define MAX_LEN 100
 
 int main() {
+    setlocale(LC_ALL, "");
+    
     char frase[MAX_LEN];
     int n, opcao;
 
