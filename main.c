@@ -29,7 +29,7 @@ int main() {
                 break;
 
             case 2:
-                printf("Texto criptografado carregado: %s\n");
+                printf("Texto criptografado carregado: %s\n", frase);
 
                 printf("Escolha o valor de N usado para criptografar (1 a 26): ");
                 scanf("%d", &n);
