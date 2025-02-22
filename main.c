@@ -1,8 +1,34 @@
 #include <stdio.h>
 #include <locale.h>
 #include <string.h>
-
 #define MAX_LEN 100
+
+/*
+    Função para criptografar usando a cifra de César,
+    na qual o deslocamento (N) varia de 1 a 26 sendo limitado pelo uso do módulo 26.
+*/
+
+void criptografar(char *str, int n) {
+    int i;
+    //Percorrendo a string até o terminador '\0'
+    for (i = 0; str[i] != '\0'; i++) {
+        if (str[i] != ' ') { // Mantém espaços inalterados
+            str[i] = 'a' + (str[i] - 'a' + n + 26) % 26;
+        }
+    }
+}
+
+// Função para descriptografar
+void descriptografar(char *str, int n) {	
+    int i;
+    for (i = 0; str[i] != '\0'; i++) {
+        if (str[i] != ' ') {
+            //Ao invés de somar, subtrai o N para descriptografar
+            str[i] = 'a' + (str[i] - 'a' - n + 26) % 26;
+        }
+    }
+}
+
 
 int main() {
     setlocale(LC_ALL, "");
@@ -28,6 +54,9 @@ int main() {
                 printf("Escolha um numero N (1 a 26): ");
                 scanf("%d", &n);
                 getchar();
+                
+                criptografar(frase, n);
+                printf("Texto criptografado: %s\n", frase);                
                 break;
 
             case 2:
@@ -36,6 +65,9 @@ int main() {
                 printf("Escolha o valor de N usado para criptografar (1 a 26): ");
                 scanf("%d", &n);
                 getchar();
+                
+                descriptografar(frase, n);
+                printf("\n\nTexto original: %s\n", frase);
                 break;
 
             case 3:
