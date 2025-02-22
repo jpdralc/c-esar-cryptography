@@ -20,7 +20,8 @@ int main() {
         switch (opcao) {
             case 1:
                 printf("Digite a frase (max %d caracteres): ", MAX_LEN);
-                fgets(frase, MAX_LEN, stdin);                
+                fgets(frase, MAX_LEN, stdin);
+                frase[strcspn(frase, "\n")] = '\0'; // Remover o '\n' do final                  
 
                 printf("Escolha um numero N (1 a 26): ");
                 scanf("%d", &n);
