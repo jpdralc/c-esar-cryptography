@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <locale.h>
 #include <string.h>
+#include <ctype.h>
+
 #define MAX_LEN 100
 
 /*
@@ -18,7 +20,6 @@ void criptografar(char *str, int n) {
     }
 }
 
-// Função para descriptografar
 void descriptografar(char *str, int n) {	
     int i;
     for (i = 0; str[i] != '\0'; i++) {
@@ -29,6 +30,13 @@ void descriptografar(char *str, int n) {
     }
 }
 
+// Função para converter string para minúsculas
+void toLowerCase(char *str) {
+	int i;
+    for (i = 0; str[i] != '\0'; i++) {
+        str[i] = tolower(str[i]);
+    }
+}
 
 int main() {
     setlocale(LC_ALL, "");
@@ -49,7 +57,9 @@ int main() {
             case 1:
                 printf("Digite a frase (max %d caracteres): ", MAX_LEN);
                 fgets(frase, MAX_LEN, stdin);
-                frase[strcspn(frase, "\n")] = '\0'; // Remover o '\n' do final                  
+                frase[strcspn(frase, "\n")] = '\0'; // Remover o '\n' do final 
+                
+				toLowerCase(frase);                 
 
                 printf("Escolha um numero N (1 a 26): ");
                 scanf("%d", &n);
