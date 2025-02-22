@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <locale.h>
+#include <string.h>
+
 #define MAX_LEN 100
 
 int main() {
