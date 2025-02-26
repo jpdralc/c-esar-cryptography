@@ -60,12 +60,22 @@ void carregarArquivo(const char *nomeArquivo, char *texto) {
     fclose(file);
 }
 
+/* Gera uma mensagem randômica */
+void mensagemAleatoria(const char *mensagens[], int tamanho) {
+    printf("%s\n", mensagens[rand() % tamanho]);
+}
+
 int main() {
     setlocale(LC_ALL, "");
     
     char frase[MAX_LEN], entrada[MAX_LEN];
     int i, n, opcao, error;
     const char *arquivo = "mensagem.txt";
+    const char *errosN[] = {
+        "Ops... acho que você errou! Escolha um número de 1 a 26.",
+        "Hmm... isso não parece um número válido! Tente de novo.",
+        "Opa! Entre 1 e 26, por favor!" 
+    };
 
     do {
         printf("\n--- Jogo da Imitação Textual ---\n");
@@ -130,7 +140,7 @@ int main() {
                 do {
                     printf("Escolha um número N (1 a 26): ");
                     if (scanf("%d", &n) != 1 || n < 1 || n > 26) {
-                        printf("Valor inválido! Digite um número entre 1 e 26.\n");
+                        mensagemAleatoria(errosN, 3);
                         while (getchar() != '\n'); /* Limpa o buffer de entrada */
                         continue;
                     }
@@ -152,7 +162,7 @@ int main() {
                 do {
                     printf("Escolha o valor de N usado para criptografar (1 a 26): ");
                     if (scanf("%d", &n) != 1 || n < 1 || n > 26) {
-                        printf("Valor inválido! Digite um número entre 1 e 26.\n");
+                        mensagemAleatoria(errosN, 3);
                         while (getchar() != '\n'); /* Limpa o buffer de entrada */
                         continue;
                     }
