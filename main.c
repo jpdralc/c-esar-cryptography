@@ -62,7 +62,7 @@ void carregarArquivo(const char *nomeArquivo, char *texto) {
 
 /* Gera uma mensagem randômica */
 void mensagemAleatoria(const char *mensagens[], int tamanho) {
-    printf("%s\n", mensagens[rand() % tamanho]);
+    printf("\n\n%s\n", mensagens[rand() % tamanho]);
 }
 
 int main() {
@@ -71,11 +71,27 @@ int main() {
     char frase[MAX_LEN], entrada[MAX_LEN];
     int i, n, opcao, error;
     const char *arquivo = "mensagem.txt";
+    
     const char *errosN[] = {
         "Ops... acho que você errou! Escolha um número de 1 a 26.",
         "Hmm... isso não parece um número válido! Tente de novo.",
         "Opa! Entre 1 e 26, por favor!" 
     };
+    
+    const char *errosEntrada[] = {
+        "É... parece que isso não é um número entre 1 e 4",
+        "Hmm... não, isso não é um número entre 1 e 4...",
+        "Opa! Entre 1 e 4, por favor!",
+		"Nós sabemos que este número não está entre 1 e 4..." 
+    };
+    
+    const char *errosLetra[] = {
+        "Isso nem é um número!",
+        "Hmm... que número é esse? Não me parece 1 nem 2 nem 3 nem 4...",
+        "Acho que estamos nos desentendendo, isso é uma letra." 
+    };
+    
+    
 
     do {
         printf("\n--- Jogo da Imitação Textual ---\n");
@@ -104,13 +120,27 @@ int main() {
         }
 
         if (apenasEspaco) {
-            printf("Espaço? Não, essa não é uma das opções...\n");
+            printf("\n\nEspaço? Não, essa não é uma das opções...\n");
+            continue;
+        }
+        
+        /* Verifica se há alguma letra na entrada */
+        int contemLetra = 0;
+        for (i = 0; entrada[i] != '\0'; i++) {
+            if (isalpha(entrada[i])) {
+                contemLetra = 1;
+                break;
+            }
+        }
+
+        if (contemLetra) {
+            mensagemAleatoria(errosLetra, 3);
             continue;
         }
 
         /* Converte a entrada para número */
         if (sscanf(entrada, "%d", &opcao) != 1) {
-            printf("Entrada inválida! Digite um número de 1 a 4.\n");
+            mensagemAleatoria(errosEntrada, 3);
             continue;
         }
 
@@ -201,7 +231,7 @@ int main() {
                 break;
 
             default:
-                printf("Opção inválida! Escolha novamente.\n");
+                mensagemAleatoria(errosEntrada, 4);
         }
     } while (opcao != 4);
 
