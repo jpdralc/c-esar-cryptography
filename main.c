@@ -14,7 +14,7 @@ void criptografar(char *str, int n) {
     int i;
     /* Percorrendo a string até o terminador '\0' */
     for (i = 0; str[i] != '\0'; i++) {
-        if (str[i] != ' ') { // Mantém espaços inalterados
+        if (str[i] != ' ') { /* Mantém espaços inalterados */
             str[i] = 'a' + (str[i] - 'a' + n + 26) % 26;
         }
     }
@@ -64,7 +64,7 @@ int main() {
     setlocale(LC_ALL, "");
     
     char frase[MAX_LEN];
-    int n, opcao;
+    int i, 	n, opcao, error;
     const char *arquivo = "mensagem.txt";
 
     do {
@@ -77,12 +77,27 @@ int main() {
         scanf("%d", &opcao);
         getchar();
         
+        error = 0;
+        
         switch (opcao) {
             case 1:
                 printf("Digite a frase (max %d caracteres): ", MAX_LEN);
-                fgets(frase, MAX_LEN, stdin);
+                fgets(frase, MAX_LEN, stdin); /* Recuperando entrada do usuário de forma segura */
                 frase[strcspn(frase, "\n")] = '\0'; /* Remover o '\n' do final */
                 
+                /* Validacao da string */
+			    for (i = 0; frase[i] != '\0'; i++) {
+			        if (!isalpha(frase[i]) && frase[i] != ' ') {
+			            error = 1;
+			            break;
+			        }
+			    }
+			    
+			     if (error) {
+			        printf("Caracteres invalidos detectados! Use apenas letras (não acentuadas) e espaços.\n");
+			        break; /* Volta ao menu sem processar */
+			    }
+			                
 				toLowerCase(frase);                 
 
                 printf("Escolha um numero N (1 a 26): ");
