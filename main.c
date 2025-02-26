@@ -64,7 +64,7 @@ int main() {
     setlocale(LC_ALL, "");
     
     char frase[MAX_LEN];
-    int i, 	n, opcao, error;
+    int i, n, opcao, error;
     const char *arquivo = "mensagem.txt";
 
     do {
@@ -73,8 +73,13 @@ int main() {
         printf("2 - Descriptografar a frase salva\n");
         printf("3 - Descriptografar frase livre\n");
         printf("4 - Sair\n");
-        printf("Escolha uma opcao: ");
-        scanf("%d", &opcao);
+        printf("Escolha uma opcao: ");    
+        
+        if (scanf("%d", &opcao) != 1) {
+            printf("Entrada inválida! Digite um número de 1 a 4.\n");
+            while (getchar() != '\n'); /* Limpa o buffer de entrada */
+            continue;
+        }
         getchar();
         
         error = 0;
@@ -100,8 +105,15 @@ int main() {
 			                
 				toLowerCase(frase);                 
 
-                printf("Escolha um numero N (1 a 26): ");
-                scanf("%d", &n);
+                do {
+                    printf("Escolha um numero N (1 a 26): ");
+                    if (scanf("%d", &n) != 1 || n < 1 || n > 26) {
+                        printf("Valor inválido! Digite um número entre 1 e 26.\n");
+                        while (getchar() != '\n'); /* Limpa o buffer de entrada */
+                        continue;
+                    }
+                    break;
+                } while (1);
                 getchar();
                 
                 criptografar(frase, n);
@@ -114,29 +126,43 @@ int main() {
             case 2:
             	carregarArquivo(arquivo, frase);
                 printf("Texto criptografado carregado: %s\n", frase);
-
-                printf("Escolha o valor de N usado para criptografar (1 a 26): ");
-                scanf("%d", &n);
+                
+                do {
+                    printf("Escolha o valor de N usado para criptografar (1 a 26): ");
+                    if (scanf("%d", &n) != 1 || n < 1 || n > 26) {
+                        printf("Valor inválido! Digite um número entre 1 e 26.\n");
+                        while (getchar() != '\n'); /* Limpa o buffer de entrada */
+                        continue;
+                    }
+                    break;
+                } while (1);
                 getchar();
                 
                 descriptografar(frase, n);
-                printf("\n\nTexto original: %s\n", frase);
+                printf("\n\nTexto descriptografado: %s\n", frase);
                 break;
             case 3:
             	printf("Digite a frase (max %d caracteres): ", MAX_LEN);
                 fgets(frase, MAX_LEN, stdin);
                 frase[strcspn(frase, "\n")] = '\0'; /* Remover o '\n' do final */
                 
-				toLowerCase(frase);
-				
-				printf("Escolha o valor de N usado para criptografar (1 a 26): ");
-                scanf("%d", &n);
-                getchar();	
+                toLowerCase(frase);
+                
+                do {
+                    printf("Escolha o valor de N usado para criptografar (1 a 26): ");
+                    if (scanf("%d", &n) != 1 || n < 1 || n > 26) {
+                        printf("Valor inválido! Digite um número entre 1 e 26.\n");
+                        while (getchar() != '\n'); /* Limpa o buffer de entrada */
+                        continue;
+                    }
+                    break;
+                } while (1);
+                getchar();    
                 
                 descriptografar(frase, n);
                 printf("\n\nTexto original: %s\n", frase);
-				break;                 
-	
+                break;                 
+    
             case 4:
                 printf("Saindo...\n");
                 break;
