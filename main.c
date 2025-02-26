@@ -65,42 +65,49 @@ void mensagemAleatoria(const char *mensagens[], int tamanho) {
     printf("\n\n%s\n", mensagens[rand() % tamanho]);
 }
 
+int entradaVazia(const char *str) {
+    while (*str) {
+        if (!isspace(*str)) return 0;
+        str++;
+    }
+    return 1;
+}
+
 int main() {
-    setlocale(LC_ALL, "");
     
     char frase[MAX_LEN], entrada[MAX_LEN];
     int i, n, opcao, error;
     const char *arquivo = "mensagem.txt";
     
     const char *errosN[] = {
-        "Ops... acho que você errou! Escolha um número de 1 a 26.",
-        "Hmm... isso não parece um número válido! Tente de novo.",
+        "Ops... acho que voce errou! Escolha um numero de 1 a 26.",
+        "Hmm... isso nao parece um numero valido! Tente de novo.",
         "Opa! Entre 1 e 26, por favor!" 
     };
     
     const char *errosEntrada[] = {
-        "É... parece que isso não é um número entre 1 e 4",
-        "Hmm... não, isso não é um número entre 1 e 4...",
+        "Eh... parece que isso nao eh um numero entre 1 e 4",
+        "Hmm... nao, isso nao eh um numero entre 1 e 4...",
         "Opa! Entre 1 e 4, por favor!",
-		"Nós sabemos que este número não está entre 1 e 4..." 
+		"Nos sabemos que este numero nao está entre 1 e 4..." 
     };
     
     const char *errosLetra[] = {
-        "Isso nem é um número!",
-        "Hmm... que número é esse? Não me parece 1 nem 2 nem 3 nem 4...",
-        "Acho que estamos nos desentendendo, isso é uma letra." 
+        "Isso nem eh um numero!",
+        "Hmm... que numero eh esse? Nao me parece 1 nem 2 nem 3 nem 4...",
+        "Acho que estamos nos desentendendo, isso eh uma letra." 
     };
     
     
 
     do {
-        printf("\n--- Jogo da Imitação Textual ---\n");
+        printf("\n--- Jogo da Imitacao Textual ---\n\n");
         printf("1 - Digitar nova frase e criptografar\n");
         printf("2 - Descriptografar a frase salva\n");
         printf("3 - Descriptografar frase livre\n");
         printf("4 - Sair\n");
-        printf("Escolha uma opcao: ");    
-        
+        printf("\n\nEscolha uma opcao: ");
+		
         /* Captura a entrada como string para evitar problemas */
         if (fgets(entrada, sizeof(entrada), stdin) == NULL) {
             printf("Erro ao ler entrada.\n");
@@ -120,7 +127,7 @@ int main() {
         }
 
         if (apenasEspaco) {
-            printf("\n\nEspaço? Não, essa não é uma das opções...\n");
+            printf("\n\nEspaco? Nao, essa nao eh uma das opcoes...\n");
             continue;
         }
         
@@ -148,9 +155,14 @@ int main() {
         
         switch (opcao) {
             case 1:
-                printf("Digite a frase (max %d caracteres): ", MAX_LEN);
-                fgets(frase, MAX_LEN, stdin); /* Recuperando entrada do usuário de forma segura */
-                frase[strcspn(frase, "\n")] = '\0'; /* Remover o '\n' do final */
+            	do {
+                	printf("Digite a frase (max %d caracteres): ", MAX_LEN);
+                	fgets(frase, MAX_LEN, stdin); /* Recuperando entrada do usuário de forma segura */
+                	frase[strcspn(frase, "\n")] = '\0'; /* Remover o '\n' do final */
+                	if (entradaVazia(frase)) {
+                        printf("Vazio nao pode.\n");
+                    }
+                } while (entradaVazia(frase));
                 
                 /* Validação da string */
 			    for (i = 0; frase[i] != '\0'; i++) {
@@ -161,14 +173,14 @@ int main() {
 			    }
 			    
 			     if (error) {
-			        printf("Caracteres invalidos detectados! Use apenas letras (não acentuadas) e espaços.\n");
+			        printf("Caracteres invalidos detectados! Use apenas letras (nao acentuadas) e espacos.\n");
 			        break; /* Volta ao menu sem processar */
 			    }
 			                
 				toLowerCase(frase);                 
 
                 do {
-                    printf("Escolha um número N (1 a 26): ");
+                    printf("Escolha um numero N (1 a 26): ");
                     if (scanf("%d", &n) != 1 || n < 1 || n > 26) {
                         mensagemAleatoria(errosN, 3);
                         while (getchar() != '\n'); /* Limpa o buffer de entrada */
@@ -204,16 +216,21 @@ int main() {
                 printf("\n\nTexto descriptografado: %s\n", frase);
                 break;
             case 3:
-            	printf("Digite a frase (max %d caracteres): ", MAX_LEN);
-                fgets(frase, MAX_LEN, stdin);
-                frase[strcspn(frase, "\n")] = '\0'; /* Remover o '\n' do final */
+            	do {
+            		printf("Digite a frase (max %d caracteres): ", MAX_LEN);
+                	fgets(frase, MAX_LEN, stdin);
+                	frase[strcspn(frase, "\n")] = '\0'; /* Remover o '\n' do final */
+                 	if (entradaVazia(frase)) {
+                        printf("Vazio nao pode.\n");
+                    }
+                } while (entradaVazia(frase));
                 
                 toLowerCase(frase);
                 
                 do {
                     printf("Escolha o valor de N usado para criptografar (1 a 26): ");
                     if (scanf("%d", &n) != 1 || n < 1 || n > 26) {
-                        printf("Valor inválido! Digite um número entre 1 e 26.\n");
+                        printf("Valor invalido! Digite um numero entre 1 e 26.\n");
                         while (getchar() != '\n'); /* Limpa o buffer de entrada */
                         continue;
                     }
