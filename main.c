@@ -63,7 +63,7 @@ void carregarArquivo(const char *nomeArquivo, char *texto) {
 int main() {
     setlocale(LC_ALL, "");
     
-    char frase[MAX_LEN];
+    char frase[MAX_LEN], entrada[MAX_LEN];
     int i, n, opcao, error;
     const char *arquivo = "mensagem.txt";
 
@@ -75,13 +75,35 @@ int main() {
         printf("4 - Sair\n");
         printf("Escolha uma opcao: ");    
         
-        if (scanf("%d", &opcao) != 1) {
-            printf("Entrada inválida! Digite um número de 1 a 4.\n");
-            while (getchar() != '\n'); /* Limpa o buffer de entrada */
+        /* Captura a entrada como string para evitar problemas */
+        if (fgets(entrada, sizeof(entrada), stdin) == NULL) {
+            printf("Erro ao ler entrada.\n");
             continue;
         }
-        getchar();
-        
+
+        /* Remove o '\n' do final */
+        entrada[strcspn(entrada, "\n")] = '\0';
+
+        /* Verifica se a entrada contém apenas espaços */
+        int apenasEspaco = 1;
+        for (i = 0; entrada[i] != '\0'; i++) {
+            if (!isspace(entrada[i])) {
+                apenasEspaco = 0;
+                break;
+            }
+        }
+
+        if (apenasEspaco) {
+            printf("Espaço? Não, essa não é uma das opções...\n");
+            continue;
+        }
+
+        /* Converte a entrada para número */
+        if (sscanf(entrada, "%d", &opcao) != 1) {
+            printf("Entrada inválida! Digite um número de 1 a 4.\n");
+            continue;
+        }
+
         error = 0;
         
         switch (opcao) {
@@ -90,7 +112,7 @@ int main() {
                 fgets(frase, MAX_LEN, stdin); /* Recuperando entrada do usuário de forma segura */
                 frase[strcspn(frase, "\n")] = '\0'; /* Remover o '\n' do final */
                 
-                /* Validacao da string */
+                /* Validação da string */
 			    for (i = 0; frase[i] != '\0'; i++) {
 			        if (!isalpha(frase[i]) && frase[i] != ' ') {
 			            error = 1;
@@ -106,7 +128,7 @@ int main() {
 				toLowerCase(frase);                 
 
                 do {
-                    printf("Escolha um numero N (1 a 26): ");
+                    printf("Escolha um número N (1 a 26): ");
                     if (scanf("%d", &n) != 1 || n < 1 || n > 26) {
                         printf("Valor inválido! Digite um número entre 1 e 26.\n");
                         while (getchar() != '\n'); /* Limpa o buffer de entrada */
@@ -118,13 +140,13 @@ int main() {
                 
                 criptografar(frase, n);
                 printf("Texto criptografado: %s\n", frase);
-				
-				salvarArquivo(arquivo, frase);
+                
+                salvarArquivo(arquivo, frase);
                 printf("Frase salva no arquivo.\n");                
                 break;
 
             case 2:
-            	carregarArquivo(arquivo, frase);
+                carregarArquivo(arquivo, frase);
                 printf("Texto criptografado carregado: %s\n", frase);
                 
                 do {
@@ -157,6 +179,7 @@ int main() {
                     }
                     break;
                 } while (1);
+                
                 getchar();    
                 
                 descriptografar(frase, n);
@@ -168,7 +191,7 @@ int main() {
                 break;
 
             default:
-                printf("Opcao invalida! Escolha novamente.\n");
+                printf("Opção inválida! Escolha novamente.\n");
         }
     } while (opcao != 4);
 
